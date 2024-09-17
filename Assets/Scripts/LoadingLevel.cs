@@ -8,44 +8,71 @@ public class LoadingLevel : MonoBehaviour
 {
     // Loads the levels in Unity, using the levelName as the scene names in Unity, and having an Player spawn point in the level.
     PlayerController playerController;
+    PlayerUI PlayerUI;
+    GameManager GameManager;
     public string levelName;
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Debug.Log("Hopefully Unity crashes");
-    }
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player has entered the trigger");
-            LoadLevel();
+            LoadLevel(levelName);
         }
+    }
+    
+    public void LoadLevel(string name)
+    {
+        if (name == "Main Menu")
+        {
+            SceneManager.LoadScene("Main Menu");
+            PlayerUI.MainMenu();
+            Debug.Log("Main Menu Loaded");
+        }
+        else if (name == "Level 1")
+        {
+            SceneManager.LoadScene("Level 1");
+            PlayerUI.PlayerHUD();
+            Debug.Log("Level 1 Loaded");
+        }
+        else if (name == "Level 2")
+        {
+            SceneManager.LoadScene("Level 2");
+            PlayerUI.PlayerHUD();
+            Debug.Log("Level 2 Loaded");
+        }
+        else if (name == "Level 3")
+        {
+            SceneManager.LoadScene("Level 3");
+            PlayerUI.PlayerHUD();
+            Debug.Log("Level 3 Loaded");
+        }
+        else if (name == "End")
+        {
+            SceneManager.LoadScene("End");
+            PlayerUI.GameOver();
+            Debug.Log("Win Loaded");
+        }
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        playerController = FindObjectOfType<PlayerController>();
+        PlayerUI = FindObjectOfType<PlayerUI>();
+        GameManager.Instance.playerController = playerController;
+        GameManager.SpawnPlayer();
+        
+    }
+    
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+        PlayerUI.PlayerHUD();
+        Debug.Log("Main Menu Loaded");
     }
 
-    // Load the levels in the game using the levelName as the scene names in Unity
-    public void LoadLevel()
+    public void StartGame()
     {
-        SceneManager.LoadScene(levelName);
-        Debug.Log(levelName + " Loaded");
-    }
-    
-    // Just a simple quit game function, that will quit the game, if the game is built, if not it will just stop the game in the editor, and print a message to the console, that the game is quitting, and that you will probably never see this message, because the game will be closed, and the console will be closed as well, // WTF is the autocorrect doing (Only comment in this line to be human).
-    public void QuitGame()
-    {
-        Application.Quit();
-        Debug.Log("Probably never going to see this message" + this);
-    }
-    
-    public void SpawnPlayer()
-    {
-        if (CompareTag("PlayerSpawn"))
-        {
-            playerController.Player = GameObject.FindWithTag("Player");
-            playerController.Player.transform.position = transform.position;
-            Debug.Log("Player has spawned");
-        }
+        SceneManager.LoadScene("Level 1");
+        Debug.Log("Level 1 Loaded");
     }
 }

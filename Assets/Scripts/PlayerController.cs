@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     public void Start()
     {
         characterController = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked; // Locks the cursor to the center of the screen, and hitting escape will unlock it
+        //Cursor.lockState = CursorLockMode.Locked; // Locks the cursor to the center of the screen, and hitting escape will unlock it
     }
 
     public void Update()
