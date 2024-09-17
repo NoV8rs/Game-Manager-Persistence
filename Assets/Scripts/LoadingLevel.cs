@@ -7,9 +7,8 @@ using UnityEngine.SceneManagement;
 public class LoadingLevel : MonoBehaviour
 {
     // Loads the levels in Unity, using the levelName as the scene names in Unity, and having an Player spawn point in the level.
+    PlayerController playerController;
     public string levelName;
-    
-    public GameObject playerSpawnPoint;
 
     // Update is called once per frame
     void Update()
@@ -28,7 +27,7 @@ public class LoadingLevel : MonoBehaviour
 
     // Load the levels in the game using the levelName as the scene names in Unity
     public void LoadLevel()
-    { 
+    {
         SceneManager.LoadScene(levelName);
         Debug.Log(levelName + " Loaded");
     }
@@ -38,5 +37,15 @@ public class LoadingLevel : MonoBehaviour
     {
         Application.Quit();
         Debug.Log("Probably never going to see this message" + this);
+    }
+    
+    public void SpawnPlayer()
+    {
+        if (CompareTag("PlayerSpawn"))
+        {
+            playerController.Player = GameObject.FindWithTag("Player");
+            playerController.Player.transform.position = transform.position;
+            Debug.Log("Player has spawned");
+        }
     }
 }
