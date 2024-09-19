@@ -23,10 +23,9 @@ public class PlayerData // Class is used to store Player Data in the game.
         // Scene save for what scene the player is in.
         sceneName = SceneManager.GetActiveScene().name;
         
-        
         position = new float[3];
-        position[0] = player.transform.position.x;
-        position[1] = player.transform.position.y;
-        position[2] = player.transform.position.z;
+        position[0] = player.playerPosition.x;
+        position[1] = player.playerPosition.y;
+        position[2] = player.playerPosition.z;
     }
 }

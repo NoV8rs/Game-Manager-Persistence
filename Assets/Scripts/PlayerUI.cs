@@ -13,6 +13,10 @@ public class PlayerUI : MonoBehaviour
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI experienceText;
     public TextMeshProUGUI levelText;
+    public TextMeshProUGUI playerPosX;
+    public TextMeshProUGUI playerPosY;
+    public TextMeshProUGUI playerPosZ;
+    public TextMeshProUGUI gameManagers;
     
     // Main Menu UI for the player, showing the main menu GameObjects.
     public GameObject mainMenu;
@@ -25,6 +29,11 @@ public class PlayerUI : MonoBehaviour
             moneyText.text = "Player Money: " + playerController.money;
             experienceText.text = "Player XP: " + playerController.experience;
             levelText.text = "Player Level: " + playerController.level;
+            playerPosX.text = "Position X: " + playerController.playerPosition.x;
+            playerPosY.text = "Position Y: " + playerController.playerPosition.y;
+            playerPosZ.text = "Position Z: " + playerController.playerPosition.z;
+            int gameManagerCount = FindObjectsOfType<GameManager>().Length;
+            gameManagers.text = "Game Managers: " + gameManagerCount;
         }
     }
 

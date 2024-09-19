@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour
     //Player Stats
     public int level = 1;
     public int health = 100;
-    public int experience = 10;
+    public int experience = 0;
     public int money = 0;
     
     // Player Position
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        playerPosition = transform.position;
+        MovingRandomly();
     }
     
     public void SavePlayer()
@@ -66,10 +67,16 @@ public class PlayerController : MonoBehaviour
         money = data.money; 
         experience = data.experience; 
         Vector3 position; 
-        position.x = data.position[0]; 
-        position.y = data.position[1]; 
-        position.z = data.position[2]; 
-        transform.position = position;
+        playerPosition.x = data.position[0];
+        playerPosition.y = data.position[1];
+        playerPosition.z = data.position[2];
         SceneManager.LoadScene(data.sceneName);
+    }
+
+    public void MovingRandomly()
+    {
+        playerPosition.x += 1 * Time.deltaTime;
+        playerPosition.z += 100 * Time.deltaTime;
+        playerPosition.y += 25 * Time.deltaTime;
     }
 }
