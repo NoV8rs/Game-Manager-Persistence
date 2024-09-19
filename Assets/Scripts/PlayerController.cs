@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class PlayerController : MonoBehaviour
      */
     
     private CharacterController characterController;
-    public GameObject Player;
     
     //Speed
     public float playerSpeed = 10.0f;
@@ -36,7 +36,11 @@ public class PlayerController : MonoBehaviour
     //Player Stats
     public int level = 1;
     public int health = 100;
-    public int experience = 0;
+    public int experience = 10;
+    public int money = 0;
+    
+    // Player Position
+    public Vector3 playerPosition;
     
     public void Start()
     {
@@ -46,89 +50,26 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        PlayerMovement();
-    }
-
-    public void PlayerMovement()
-    {
-        PlayerMoves();
-        
-        // Jumping
-        if (Input.GetButtonDown("Jump"))
-        {
-            Jump();
-        }
-        
-        // Sprinting
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            Sprint();
-        }
-        
-        //Saving and Loading
-        SavePlayer();
-        LoadPlayer();
-    }
-
-    public void PlayerMoves()
-    {
-        // Player moving forwards, backwards, left, right, with Camera Rotation.
-        // Player Movement
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        move = transform.TransformDirection(move);
-        characterController.Move(move * Time.deltaTime * playerSpeed);
-        
-        // Mouse Rotation
-        float rotation = Input.GetAxis("Mouse X") * senisitivityX * Time.deltaTime;
-        transform.Rotate(0, rotation, 0);
-        float cameraRotation = Input.GetAxis("Mouse Y") * senisitivityY * Time.deltaTime;
-        currentCameraRotationX -= cameraRotation;
-        currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
-        playerCamera.localEulerAngles = new Vector3(currentCameraRotationX, 0, 0);
-    }
-    
-    public void Jump()
-    {
-        if (isGrounded)
-        {
-            float jumpHeight = Mathf.Sqrt(2 * gravity * maxJumpHeight);
-            characterController.Move(Vector3.up * jumpHeight * Time.deltaTime);
-        }
-        else
-        {
-            characterController.Move(Vector3.down * gravity * Time.deltaTime);
-        }
-    }
-    
-    public void Sprint()
-    {
-        playerSpeed = sprintSpeed;
+        playerPosition = transform.position;
     }
     
     public void SavePlayer()
     {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Save_System.SavePlayer(this);
-        }
+        Save_System.SavePlayer(this);
     }
 
     public void LoadPlayer()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            PlayerData data = Save_System.LoadPlayer();
-            level = data.level;
-            health = data.health;
-            Vector3 position;
-            position.x = data.position[0];
-            position.y = data.position[1];
-            position.z = data.position[2];
-            transform.position = position;
-        }
+        PlayerData data = Save_System.LoadPlayer();
+        level = data.level; 
+        health = data.health; 
+        money = data.money; 
+        experience = data.experience; 
+        Vector3 position; 
+        position.x = data.position[0]; 
+        position.y = data.position[1]; 
+        position.z = data.position[2]; 
+        transform.position = position;
+        SceneManager.LoadScene(data.sceneName);
     }
-
-
-
-
 }

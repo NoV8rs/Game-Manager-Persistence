@@ -1,99 +1,67 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using OpenCover.Framework.Model;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     // Script is used to manage the game, and the game states.
     public static GameManager Instance { get; private set; }
-    public PlayerController playerController;
     public PlayerUI playerUI;
-    public LoadingLevel loadingLevel;
-    public enum GameState { MainMenu, Playing, Paused, GameOver }
-    
-    
-    
-    public GameState gameState;
-    
-    private void Start()
+    public PlayerController playerController;
+
+    public void Update()
     {
-        gameState = GameState.MainMenu;
+        DebuggedLoadLevel();
+        playerUI.UIChange();
     }
     
-    private void Update()
+    public void DebuggedLoadLevel()
     {
-        switch (gameState)
+        if (Input.GetKeyDown("1"))
         {
-            case GameState.MainMenu:
-                MainMenu();
-                break;
-            case GameState.Playing:
-                Playing();
-                break;
-            case GameState.Paused:
-                PauseGame();
-                break;
-            case GameState.GameOver:
-                GameOver();
-                break;
+            SceneManager.LoadScene(1);
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            SceneManager.LoadScene(2);
+        }
+        if (Input.GetKeyDown("3"))
+        {
+            SceneManager.LoadScene(3);
+        }
+        if (Input.GetKeyDown("0"))
+        {
+            SceneManager.LoadScene(0);
         }
     }
     
-    public void MainMenu()
+    public void HealthValues(int amount)
     {
-        gameState = GameState.MainMenu;
-        playerUI.MainMenu();
-        Cursor.visible = true;
+        playerController.health += amount;
     }
     
-    public void PauseGame()
+    public void MoneyValues(int amount)
     {
-        // Pause the game
-        if (Input.GetKeyDown(KeyCode.Escape) && gameState == GameState.Playing)
-        {
-            Time.timeScale = 0;
-            gameState = GameState.Paused;
-            playerUI.PauseGame();
-            Cursor.visible = true;
-        }
-        // Unpause the game
-        else
-        if (gameState == GameState.Paused)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Time.timeScale = 1;
-                gameState = GameState.Playing;
-                playerUI.PlayerHUD();
-                Cursor.visible = false;
-            }
-        }
+        playerController.money += amount;
     }
     
-    public void GameOver()
+    public void ExperienceValues(int amount)
     {
-        gameState = GameState.GameOver;
+        playerController.experience += amount;
     }
     
-    public void Playing()
+    public void LevelValues(int amount)
     {
-        gameState = GameState.Playing;
-        playerUI.PlayerHUD();
-        Cursor.visible = false;
+        playerController.level += amount;
     }
 
-    public void SpawnPlayer()
+    public static void DeletedPlayerData()
     {
-        GameObject spawnPoint = GameObject.FindWithTag("PlayerSpawn");
-        if (loadingLevel.CompareTag("PlayerSpawn"))
-        {
-            playerController.Player = GameObject.FindWithTag("Player");
-            playerController.Player.transform.position = loadingLevel.transform.position;
-            Debug.Log("Player has spawned");
-        }
+        Save_System.DeletePlayer();
+        Debug.Log("Player data has been deleted");
     }
-    
-    
-    
 }

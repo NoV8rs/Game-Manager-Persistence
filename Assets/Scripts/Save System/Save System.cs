@@ -38,4 +38,18 @@ public static class Save_System
                 return null;
             }
         }
+        
+        public static void DeletePlayer()
+        {
+            string path = Application.persistentDataPath + "/player.save"; // Application.persistentDataPath is used to store data in the game, and the path is the path to the save file
+            if (File.Exists(path)) // Check if the file exists
+            {
+                File.Delete(path); // Delete the file
+                Debug.Log("Player deleted at " + path);
+            }
+            else
+            {
+                Debug.LogError("Save file not found in " + path);
+            }
+        }
 }
