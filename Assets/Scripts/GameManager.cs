@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using OpenCover.Framework.Model;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,6 +35,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown("4"))
         {
             SceneManager.LoadScene(3);
+        }
+        if (Input.GetKeyDown("escape"))
+        {
+            Application.Quit();
         }
     }
     
